@@ -5,6 +5,11 @@
 	
 	class UsersController extends AppController
 	{
+		public function index()
+		{
+			// This page to redirect to site home page
+		}
+		
 		public function login()
 		{
 			// Login and registration page

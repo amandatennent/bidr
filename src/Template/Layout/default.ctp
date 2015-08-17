@@ -13,7 +13,7 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-$cakeDescription = 'CakePHP: the rapid development php framework';
+$description = 'bidr';
 ?>
 <!DOCTYPE html>
 <html>
@@ -21,7 +21,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        <?= $cakeDescription ?>:
+        <?= $description ?>:
         <?= $this->fetch('title') ?>
     </title>
     <?= $this->Html->meta('icon') ?>
@@ -34,39 +34,37 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->fetch('script') ?>
 </head>
 <body>
-	<div class="wrapper">
-		<header>
-			<div class="header-logo">
-			    <span class="helper"></span>
-			    <img alt="bidr Logo" src="../img/bidr_logo_full.png" id="logo" />
-			</div>
-			<div class="header-search">
-			    <div class="header-search-helper">
-			        <div class="header-search-box">
-			            <input class="header-search-input-text" type="search" />
-			        </div>
-			        <div class="header-search-cat-menu">
-			            <select>
-			                
-			            </select>
-			        </div>
-			        <div class="header-search-button">
-			            <input class="header-search-input-button" type="button" value="Search" />
-			        </div>                                 
-			    </div>
-			</div>
-			<div class="header-links">
-			    <p><a href="">Sign In / Register</a></p>
-			    <p><a href="">Advanced Search</a></p>
-			</div>
-		</header>
-		
-		
-			<?= $this->fetch('title') ?>
-			<?= $this->Flash->render() ?>		
-			<?= $this->fetch('content') ?>
-	</div>
-	<footer>
+    <div id="wrapper">
+        <header>
+            <div id="header-logo">
+                <span id="helper"></span>
+                <img alt="bidr Logo" src="../img/bidr_logo_full.png" id="logo" />
+            </div>
+            <div id="header-search">
+            	<?= $this->Form->create() ?>
+                <div id="header-search-helper">
+                    <div id="header-search-box">
+                        <?= $this->Form->input('', ['type' => 'text']); ?>
+                    </div>
+                    <div id="header-search-cat-menu">
+                        <select>
+                            
+                        </select>
+                    </div>
+                    <div id="header-search-button">
+                        <input type="button" value="Search" />
+                    </div>
+                    <?= $this->Form->end() ?>                              
+                </div>
+            </div>
+            <div id="header-links">
+                <p><a href="">Sign In / Register</a></p>
+                <p><a href="">Advanced Search</a></p>
+            </div>
+        </header>
+        <div class="push"></div>
+    </div>
+    <footer>	
     	<div class="left">
         	<p>Copyright &copy; Amanda Tennent. All Rights Reserved.</p>
         </div>
@@ -77,6 +75,6 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
                 <a href="">Privacy Information</a>
             </p>
         </div>
-	</footer>
+    </footer>
 </body>
 </html>
