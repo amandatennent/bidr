@@ -47,12 +47,14 @@ $description = 'bidr';
                         <?= $this->Form->input('', ['type' => 'text']); ?>
                     </div>
                     <div id="header-search-cat-menu">
-                        <select>
-                            
-                        </select>
+                            <?= $this->Form->select(
+                            	'field',
+                            	$category_names,
+                            	['empty' => '(choose a category)']
+                            ); ?>
                     </div>
                     <div id="header-search-button">
-                        <input type="button" value="Search" />
+                    	<?= $this->Form->button(__('Search')); ?>
                     </div>
                     <?= $this->Form->end() ?>                              
                 </div>
@@ -62,7 +64,22 @@ $description = 'bidr';
                 <p><a href="">Advanced Search</a></p>
             </div>
         </header>
-        <div class="push"></div>
+        
+        
+    <div id="container">
+
+        <div id="content">
+            <?= $this->Flash->render() ?>
+			<!-- title: <?= $this->fetch('title') ?> -->
+            <div class="row">
+                <?= $this->fetch('content') ?>
+            </div>
+        </div>
+    </div>
+        
+        
+        
+        
     </div>
     <footer>	
     	<div class="left">

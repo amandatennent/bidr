@@ -18,13 +18,19 @@ html, body
 	margin: 0 auto -50px; /* the bottom margin is the negative value of the footer's height */
 }
 
+header, footer, #container
+{
+	width: 65%;
+	min-width: 800px;
+	
+	margin: auto;
+}
+
 header, footer
 {
 	background-color: #000000;
-    width: 65%;
-	min-width: 800px;
+
     display: table;
-	margin: auto;
 }
 
 header
@@ -118,7 +124,7 @@ header p, footer p
 	font-size: 20px;
 }
 
-#header-search-button input
+#header-search-button button
 {
 	background-color:#ffffff;
 	border-radius:6px;
@@ -175,3 +181,4 @@ footer a
 {
 	height: 100%
 }
+
