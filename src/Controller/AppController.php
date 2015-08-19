@@ -16,6 +16,7 @@ namespace App\Controller;
 
 use Cake\Controller\Controller;
 use Cake\Event\Event;
+use Cake\ORM\TableRegistry;
 
 /**
  * Application Controller
@@ -50,6 +51,32 @@ class AppController extends Controller
        				'home'
  			]
 		]);
+		
+		// Load Categories
+        $data = TableRegistry::get('Categories');
+        $categories = $data->find();
+ 
+        $items = array();
+        
+        foreach($categories as $category)
+        {
+        	$items[$category->get('name')] = $category->get('name');
+        }
+        
+        $this->set('category_names', $items);
+        
+        // Check if user is logged in. Save the username.
+        $loggedIn = false;
+        $username = NULL;
+        
+        if ($this->Auth->user())
+        {
+        	$loggedIn = true;
+        	$username = $this->Auth->user('username');
+        }
+        
+        $this->set('loggedIn', $loggedIn);
+        $this->set('username', $username);
     }
     
     public function beforeFilter(Event $event)

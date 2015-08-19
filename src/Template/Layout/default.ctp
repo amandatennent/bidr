@@ -38,10 +38,12 @@ $description = 'bidr';
         <header>
             <div id="header-logo">
                 <span id="helper"></span>
-                <img alt="bidr Logo" src="../img/bidr_logo_full.png" id="logo" />
+                <img alt="bidr Logo" src="/img/bidr_logo_full.png" id="logo" />
             </div>
             <div id="header-search">
-            	<?= $this->Form->create() ?>
+            	<?= $this->Form->create(null, [
+            		'url' => ['controller' => 'Search', 'action' => 'results']
+            	]); ?>
                 <div id="header-search-helper">
                     <div id="header-search-box">
                         <?= $this->Form->input('', ['type' => 'text']); ?>
@@ -60,7 +62,21 @@ $description = 'bidr';
                 </div>
             </div>
             <div id="header-links">
-                <p><a href="">Sign In / Register</a></p>
+            	<!-- If the user is logged in, show them their username -->
+            	<?php
+            		if ($loggedIn == true)
+            		{
+            			echo "<p>Hi, <a href=''>$username!</a>&nbsp;&nbsp;";
+            			echo "<a href='/users/logout/'>Logout?</a></p>";
+            			
+            		}
+            		else
+            		{
+            			echo "<p><a href='/users/login/'>Sign In</a> ";
+            			echo " | <a href='/users/add/'>Register</a></p>";
+            		}
+            	?>
+                
                 <p><a href="">Advanced Search</a></p>
             </div>
         </header>
@@ -87,9 +103,9 @@ $description = 'bidr';
         </div>
         <div class="right">
         	<p>
-                <a href="">Contact Us</a>
-                <a href="">About Us</a>
-                <a href="">Privacy Information</a>
+                <a href='/help/contact/'>Contact Us</a>
+                <a href='/help/about/'>About Us</a>
+                <a href='/help/privacy'>Privacy Information</a>
             </p>
         </div>
     </footer>
