@@ -37,6 +37,9 @@
 				
 			}
 			
+			$item = $this->Items->get($id);
+			$this->set(compact('item'));
+			
 		}
 		
 		public function delete($id)

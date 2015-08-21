@@ -1,187 +1,209 @@
-<?php
-/**
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- *
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
- * @since         0.10.0
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
- */
-use Cake\Cache\Cache;
-use Cake\Core\Configure;
-use Cake\Datasource\ConnectionManager;
-use Cake\Error\Debugger;
-use Cake\Network\Exception\NotFoundException;
-
-$this->layout = false;
-
-if (!Configure::read('debug')):
-    throw new NotFoundException();
-endif;
-
-$cakeDescription = 'CakePHP: the rapid development php framework';
-?>
-<!DOCTYPE html>
-<html>
-<head>
-    <?= $this->Html->charset() ?>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <?= $cakeDescription ?>
-    </title>
-    <?= $this->Html->meta('icon') ?>
-    <?= $this->Html->css('base.css') ?>
-    <?= $this->Html->css('cake.css') ?>
-</head>
-<body class="home">
-    <header>
-        <div class="header-image">
-            <?= $this->Html->image('http://cakephp.org/img/cake-logo.png') ?>
-            <h1>Get the Ovens Ready</h1>
-        </div>
-    </header>
-    <div id="content">
-        <?php Debugger::checkSecurityKeys(); ?>
-        <p id="url-rewriting-warning" style="background-color:#e32; color:#fff;display:none">
-            URL rewriting is not properly configured on your server.
-            1) <a target="_blank" href="http://book.cakephp.org/3.0/en/installation/url-rewriting.html" style="color:#fff;">Help me configure it</a>
-            2) <a target="_blank" href="http://book.cakephp.org/3.0/en/development/configuration.html#general-configuration" style="color:#fff;">I don't / can't use URL rewriting</a>
-        </p>
-
-        <div class="row">
-            <div class="columns large-5 platform checks">
-                <?php if (version_compare(PHP_VERSION, '5.4.16', '>=')): ?>
-                    <p class="success">Your version of PHP is 5.4.16 or higher.</p>
-                <?php else: ?>
-                    <p class="problem">Your version of PHP is too low. You need PHP 5.4.16 or higher to use CakePHP.</p>
-                <?php endif; ?>
-
-                <?php if (extension_loaded('mbstring')): ?>
-                    <p class="success">Your version of PHP has the mbstring extension loaded.</p>
-                <?php else: ?>
-                    <p class="problem">Your version of PHP does NOT have the mbstring extension loaded.</p>;
-                <?php endif; ?>
-
-                <?php if (extension_loaded('openssl')): ?>
-                    <p class="success">Your version of PHP has the openssl extension loaded.</p>
-                <?php elseif (extension_loaded('mcrypt')): ?>
-                    <p class="success">Your version of PHP has the mcrypt extension loaded.</p>
-                <?php else: ?>
-                    <p class="problem">Your version of PHP does NOT have the openssl or mcrypt extension loaded.</p>
-                <?php endif; ?>
-
-                <?php if (extension_loaded('intl')): ?>
-                    <p class="success">Your version of PHP has the intl extension loaded.</p>
-                <?php else: ?>
-                    <p class="problem">Your version of PHP does NOT have the intl extension loaded.</p>
-                <?php endif; ?>
-            </div>
-            <div class="columns large-6 filesystem checks">
-                <?php if (is_writable(TMP)): ?>
-                    <p class="success">Your tmp directory is writable.</p>
-                <?php else: ?>
-                    <p class="problem">Your tmp directory is NOT writable.</p>
-                <?php endif; ?>
-
-                <?php if (is_writable(LOGS)): ?>
-                    <p class="success">Your logs directory is writable.</p>
-                <?php else: ?>
-                    <p class="problem">Your logs directory is NOT writable.</p>
-                <?php endif; ?>
-
-                <?php $settings = Cache::config('_cake_core_'); ?>
-                <?php if (!empty($settings)): ?>
-                    <p class="success">The <em><?= $settings['className'] ?>Engine</em> is being used for core caching. To change the config edit config/app.php</p>
-                <?php else: ?>
-                    <p class="problem">Your cache is NOT working. Please check the settings in config/app.php</p>
-                <?php endif; ?>
-            </div>
-        </div>
-        <div class="row">
-            <div class="columns large-12 database checks">
-                <?php
-                    try {
-                        $connection = ConnectionManager::get('default');
-                        $connected = $connection->connect();
-                    } catch (Exception $connectionError) {
-                        $connected = false;
-                        $errorMsg = $connectionError->getMessage();
-                        if (method_exists($connectionError, 'getAttributes')):
-                            $attributes = $connectionError->getAttributes();
-                            if (isset($errorMsg['message'])):
-                                $errorMsg .= '<br />' . $attributes['message'];
-                            endif;
-                        endif;
-                    }
-                ?>
-                <?php if ($connected): ?>
-                    <p class="success">CakePHP is able to connect to the database.</p>
-                <?php else: ?>
-                    <p class="problem">CakePHP is NOT able to connect to the database.<br /><br /><?= $errorMsg ?></p>
-                <?php endif; ?>
-            </div>
-        </div>
-        <div class="row">
-            <div class="columns large-6">
-                <h3>Editing this Page</h3>
-                <ul>
-                    <li>To change the content of this page, edit: src/Template/Pages/home.ctp.</li>
-                    <li>You can also add some CSS styles for your pages at: webroot/css/.</li>
-                </ul>
-            </div>
-            <div class="columns large-6">
-                <h3>Getting Started</h3>
-                <ul>
-                    <li><a target="_blank" href="http://book.cakephp.org/3.0/en/">CakePHP 3.0 Docs</a></li>
-                    <li><a target="_blank" href="http://book.cakephp.org/3.0/en/tutorials-and-examples/bookmarks/intro.html">The 15 min Bookmarker Tutorial</a></li>
-                    <li><a target="_blank" href="http://book.cakephp.org/3.0/en/tutorials-and-examples/blog/blog.html">The 15 min Blog Tutorial</a></li>
-                </ul>
-                <p>
-            </div>
-        </div>
-
-        <hr/>
-        <div class="row">
-            <div class="columns large-12">
-                <h3 class="">More about Cake</h3>
-                <p>
-                    CakePHP is a rapid development framework for PHP which uses commonly known design patterns like Front Controller and MVC.
-                </p>
-                <p>
-                    Our primary goal is to provide a structured framework that enables PHP users at all levels to rapidly develop robust web applications, without any loss to flexibility.
-                </p>
-
-                <ul>
-                    <li><a href="http://cakefoundation.org/">Cake Software Foundation</a>
-                    <ul><li>Promoting development related to CakePHP</li></ul></li>
-                    <li><a href="http://www.cakephp.org">CakePHP</a>
-                    <ul><li>The Rapid Development Framework</li></ul></li>
-                    <li><a href="http://book.cakephp.org/3.0/en/">CakePHP Documentation</a>
-                    <ul><li>Your Rapid Development Cookbook</li></ul></li>
-                    <li><a href="http://api.cakephp.org/3.0/">CakePHP API</a>
-                    <ul><li>Quick Reference</li></ul></li>
-                    <li><a href="http://bakery.cakephp.org">The Bakery</a>
-                    <ul><li>Everything CakePHP</li></ul></li>
-                    <li><a href="http://plugins.cakephp.org">CakePHP plugins repo</a>
-                    <ul><li>A comprehensive list of all CakePHP plugins created by the community</li></ul></li>
-                    <li><a href="https://groups.google.com/group/cake-php">CakePHP Google Group</a>
-                    <ul><li>Community mailing list</li></ul></li>
-                    <li><a href="irc://irc.freenode.net/cakephp">irc.freenode.net #cakephp</a>
-                    <ul><li>Live chat about CakePHP</li></ul></li>
-                    <li><a href="https://github.com/cakephp/">CakePHP Code</a>
-                    <ul><li>For the Development of CakePHP Git repository, Downloads</li></ul></li>
-                    <li><a href="https://github.com/cakephp/cakephp/issues">CakePHP Issues</a>
-                    <ul><li>CakePHP issues and pull requests</li></ul></li>
-                </ul>
-            </div>
-        </div>
+<div id="home-menu">
+	<div id="table-helper">
+		<?php
+			function convertToTime($seconds)
+			{
+				// This function converts the seconds pass to a date string				
+				// Calculate number of days
+				$days = intval($seconds / 86400);
+				$seconds = $seconds % 86400;
+				
+				// Calculate number of hours
+				$hours = intval($seconds / 3600);
+				$seconds = $seconds % 3600;
+				
+				// Calculate number of minutes
+				$minutes = intval($seconds / 60);
+				
+				// Calculate number of seconds
+				$seconds = $seconds % 60;
+				
+				$string = "$days days, $hours hours, $minutes minutes and $seconds seconds";
+				return $string;
+				
+			}
+			
+			function isLessThan1Day($seconds)
+			{
+				// This function will return true if the number of seconds passed is less than 1 day
+				if (($seconds / 86400) > 1)
+				{
+					return false;
+				}
+				else
+				{
+					return true;
+				}
+			}
+			
+			foreach($category_names1 as $category)
+			{
+				echo $this->Html->link(
+					$this->Html->div(
+						'row-helper',
+						$this->Html->div(
+							'home-menu-div',
+							$category[1]
+						)
+					),
+					array('controller' => 'categories', 'action' => 'view', $category[0]),
+					array('escape' => false)
+				);
+			}
+		?>
+	</div>
+</div>
+<div id="home-content">
+    <div id="home-heading">
+    	<h1>Check out our recently listed items...</h1>
     </div>
-    <footer>
-    </footer>
-</body>
-</html>
+    <div id="auction-display"> <!-- Box -->
+    	<!-- Check if there were enough items returned from stored procedure to show items on the home page -->
+    	<?php if (count($items) != 5): ?>
+    		<!-- Show message to user -->
+    		<?php
+    			echo "<div class='no-items'>";
+    			echo "<img class='sad-face' src='/webroot/img/sad_face.png' />";
+    			echo $this->Html->para(null, "It doesn't look like we have enough items to show you...");
+    			echo $this->Html->link(
+    				$this->Html->para(null, 'Would you like to sell something?'),
+    				array('controller' => 'items', 'action' => 'add'),
+    				array('escape' => false)
+   				);
+   				echo "</div>";
+    		?>
+    	<?php else: ?>
+    		<!-- Show content to user -->
+			<table>
+	        	<tr>
+		            <!-- Auction image -->
+		            <?php
+		            	// Auction image
+		            	if ($items[0][3] == NULL)
+		            	{
+							echo "<td id='item0_image' class='show-item display-image' rowspan='2' colspan='3'><img src='/webroot/img/auction_images/placeholder.png'/></td>";
+		            	}
+		            	else
+		            	{
+			            	echo "<td id='item0_image' class='show-item display-image' rowspan='2' colspan='3'><img src='/webroot/img/auction_images/" . $items[0][3] . "'/></td>";
+		            	}
+			            
+		            	for($i = 1; $i < count($items); $i++)
+		            	{
+		            		if ($items[$i][3] == NULL)
+		            		{
+		            			echo "<td id='item" . $i . "_image' class='hide-item display-image' rowspan='2' colspan='3'><img src='/webroot/img/auction_images/placeholder.png'/></td>";
+		            		}
+		            		else
+		            		{
+			            		echo "<td id='item" . $i . "_image' class='hide-item display-image' rowspan='2' colspan='3'><img src='/webroot/img/auction_images/" . $items[$i][3] . 
+	"'/></td>";
+		            		}
+		            	}
+		            	
+		            	// Auction title
+		            	echo "<td id='item0_title' colspan='2' class='show-item display-title'>" . $items[0][1] . "</td>";
+		            	
+		            	for($i = 1; $i < count($items); $i++)
+		            	{
+		            		echo "<td id='item" . $i . "_title' colspan='2' class='hide-item display-title'>" . $items[$i][1] . "</td>";
+		            	}
+		            ?>
+	            </tr>
+	            <tr>
+		            <!--Auction time left, price and place bid button -->
+		            <?php
+		            	// Calculate time left
+		            	echo "<td id='item0_controls' colspan='2' class='show-item display-controls'>";
+		            	
+		            	if (isLessThan1Day($items[0][4]))
+		            	{
+		            		echo "<p class='red'>" . convertToTime($items[0][4]) . "</p>";
+		            	}
+		            	else
+		            	{
+		            		echo "<p class='green'>" . convertToTime($items[0][4]) . "</p>";
+		            	}
+		            	
+		            	$amount = 0;
+		            	if ($items[0][5] == null)
+		            	{
+		            		$amount = (float)$items[0][6];
+		            	}
+		            	else
+		            	{
+		            		$amount = (float)$items[0][5];
+		            	}
+		            	
+	      	       		echo "<p>" . money_format("$%i", $amount) ."</p>";
+		            	
+		            	echo "<p>" . $this->Html->link('Place Bid', array('controller' => 'items', 'action' => 'view', $items[0][0]), array('class' => 'btn', 'role' => 'button')) . "</p>";
+		            	echo "</td>";
+		            	
+		            	for($i = 1; $i < count($items); $i++)
+		            	{
+		            		echo "<td id='item" . $i . "_controls' colspan='2' class='hide-item display-controls'>";
+		            		
+		            		if (isLessThan1Day($items[0][4]))
+		            		{
+		            			echo "<p class='red'>" . convertToTime($items[0][4]) . "</p>";
+		            		}
+		            		else
+		            		{
+		            			echo "<p class='green'>" . convertToTime($items[0][4]) . "</p>";
+		            		}
+	
+			            	
+			            	$amount = 0;
+			            	if ($items[$i][5] == null)
+			            	{
+			            		$amount = (float)$items[$i][6];
+			            	}
+			            	else
+			            	{
+			            		$amount = (float)$items[$i][5];
+			            	}
+			            	
+			            	echo "<p>" . money_format("$%i", $amount) ."</p>";
+			            	
+			            	echo "<p>" . $this->Html->link('Place Bid', array('controller' => 'items', 'action' => 'view', $items[$i][0]), array('class' => 'btn', 'role' => 'button')) . "</p>";
+			            	echo "</td>";
+		            	}
+		            ?>
+	            
+	            <tr class="small-items">
+		            <td class="hack"></td>
+		            
+		            <?php
+			            echo "<td class='selected-item'>";
+		            	echo $this->Html->link(
+		            		$this->Html->div(
+		            			null,
+		            			$this->Html->para(null, $items[0][1]) . $this->Html->para('bold', $items[0][2]),
+		            			array('escape' => false)
+		            		), 
+		            		array('controller' => 'items', 'action' => 'view', $items[0][0]),
+		            		array('escape' => false)
+	            		);
+	            		echo "</td>";
+	            		
+	            		for($i = 1; $i < count($items); $i++)
+	            		{
+	            			echo "<td class='not-selected-item'>";
+	            			echo $this->Html->link(
+			            		$this->Html->div(
+			            			null,
+			            			$this->Html->para(null, $items[$i][1]) . $this->Html->para('bold', $items[$i][2]),
+			            			array('escape' => false)
+		            			), 
+			            		array('controller' => 'items', 'action' => 'view', $items[$i][0]),
+			            		array('escape' => false)
+		    	        	);
+		            		echo "</td>";
+	            		}
+		            ?>
+	            </tr>
+	        </table>
+        <?php endif ?>
+    </div>
+</div>

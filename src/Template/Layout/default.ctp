@@ -25,9 +25,10 @@ $description = 'bidr';
         <?= $this->fetch('title') ?>
     </title>
     <?= $this->Html->meta('icon') ?>
-
+    
     <?= $this->Html->css('base.css') ?>
     <?= $this->Html->css('bidr.css') ?>
+    <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
@@ -35,79 +36,14 @@ $description = 'bidr';
 </head>
 <body>
     <div id="wrapper">
-        <header>
-            <div id="header-logo">
-                <span id="helper"></span>
-                <img alt="bidr Logo" src="/img/bidr_logo_full.png" id="logo" />
-            </div>
-            <div id="header-search">
-            	<?= $this->Form->create(null, [
-            		'url' => ['controller' => 'Search', 'action' => 'results']
-            	]); ?>
-                <div id="header-search-helper">
-                    <div id="header-search-box">
-                        <?= $this->Form->input('', ['type' => 'text']); ?>
-                    </div>
-                    <div id="header-search-cat-menu">
-                            <?= $this->Form->select(
-                            	'field',
-                            	$category_names,
-                            	['empty' => '(choose a category)']
-                            ); ?>
-                    </div>
-                    <div id="header-search-button">
-                    	<?= $this->Form->button(__('Search')); ?>
-                    </div>
-                    <?= $this->Form->end() ?>                              
-                </div>
-            </div>
-            <div id="header-links">
-            	<!-- If the user is logged in, show them their username -->
-            	<?php
-            		if ($loggedIn == true)
-            		{
-            			echo "<p>Hi, <a href=''>$username!</a>&nbsp;&nbsp;";
-            			echo "<a href='/users/logout/'>Logout?</a></p>";
-            			
-            		}
-            		else
-            		{
-            			echo "<p><a href='/users/login/'>Sign In</a> ";
-            			echo " | <a href='/users/add/'>Register</a></p>";
-            		}
-            	?>
-                
-                <p><a href="">Advanced Search</a></p>
-            </div>
-        </header>
-        
-        
-    <div id="container">
-
-        <div id="content">
-            <?= $this->Flash->render() ?>
-			<!-- title: <?= $this->fetch('title') ?> -->
-            <div class="row">
+	    <?= $this->element('header') ?>
+	    <div id="container">
+	            <?= $this->Flash->render() ?>
+				<!-- title: <?= $this->fetch('title') ?> -->
                 <?= $this->fetch('content') ?>
-            </div>
-        </div>
+	    </div>
+	    <div class="push"></div>
     </div>
-        
-        
-        
-        
-    </div>
-    <footer>	
-    	<div class="left">
-        	<p>Copyright &copy; Amanda Tennent. All Rights Reserved.</p>
-        </div>
-        <div class="right">
-        	<p>
-                <a href='/help/contact/'>Contact Us</a>
-                <a href='/help/about/'>About Us</a>
-                <a href='/help/privacy'>Privacy Information</a>
-            </p>
-        </div>
-    </footer>
+    <?= $this->element('footer'); ?>
 </body>
 </html>

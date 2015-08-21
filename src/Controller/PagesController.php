@@ -17,6 +17,8 @@ namespace App\Controller;
 use Cake\Core\Configure;
 use Cake\Network\Exception\NotFoundException;
 use Cake\View\Exception\MissingTemplateException;
+use Cake\ORM\TableRegistry;
+use Cake\Datasource\ConnectionManager;
 
 /**
  * Static content controller
@@ -37,6 +39,30 @@ class PagesController extends AppController
      */
     public function display()
     {
+    	// Load Categories
+        $data = TableRegistry::get('Categories');
+        $categories = $data->find();
+ 
+        $items = array();
+        $counter = 0;
+        
+        foreach($categories as $category)
+        {
+        	$item = array();
+        	$item[0] = $category->get('id');
+        	$item[1] = $category->get('name');
+        	$items[$counter] = $item;
+        	$counter++;
+        }
+        
+        $this->set('category_names1', $items);
+        
+        // Load 4 random auction items to display on the home page
+   		$conn = ConnectionManager::get('default');
+   		$statement = $conn->execute('Call populateHomePage()');
+   		$items = $statement->fetchAll();
+   		$this->set('items', $items);      
+        
         $path = func_get_args();
 
         $count = count($path);
@@ -61,5 +87,6 @@ class PagesController extends AppController
             }
             throw new NotFoundException();
         }
+
     }
 }
