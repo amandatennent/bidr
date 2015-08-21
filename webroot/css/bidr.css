@@ -365,6 +365,11 @@ footer .right
 	padding-bottom: 30px;
 }
 
+.display-controls p
+{
+	line-height: 200%;
+}
+
 .green
 {
 	color: #00d400;

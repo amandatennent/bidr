@@ -59,7 +59,7 @@
     </div>
     <div id="auction-display"> <!-- Box -->
     	<!-- Check if there were enough items returned from stored procedure to show items on the home page -->
-    	<?php if (count($items) != 5): ?>
+    	<?php if (count($items) != 4): ?>
     		<!-- Show message to user -->
     		<?php
     			echo "<div class='no-items'>";
@@ -135,9 +135,14 @@
 		            		$amount = (float)$items[0][5];
 		            	}
 		            	
-	      	       		echo "<p>" . money_format("$%i", $amount) ."</p>";
+		            	echo $this->Html->para(null, $this->Number->currency($amount, 'USD'));
+	      	       		echo $this->Html->para(null, 
+	      	       			$this->Html->link(
+		            		'Place Bid',
+		            		array('controller' => 'items', 'action' => 'view', $items[0][0]),
+		            		array('class' => 'btn', 'role' => 'button', 'escape' => false))
+	      	       		);             	
 		            	
-		            	echo "<p>" . $this->Html->link('Place Bid', array('controller' => 'items', 'action' => 'view', $items[0][0]), array('class' => 'btn', 'role' => 'button')) . "</p>";
 		            	echo "</td>";
 		            	
 		            	for($i = 1; $i < count($items); $i++)
@@ -164,9 +169,14 @@
 			            		$amount = (float)$items[$i][5];
 			            	}
 			            	
-			            	echo "<p>" . money_format("$%i", $amount) ."</p>";
+			            	echo $this->Html->para(null, $this->Number->currency($amount, 'USD'));
+   		      	       		echo $this->Html->para(null, 
+		      	       			$this->Html->link(
+			            		'Place Bid',
+			            		array('controller' => 'items', 'action' => 'view', $items[$i][0]),
+			            		array('class' => 'btn', 'role' => 'button', 'escape' => false))
+	      	       			);  
 			            	
-			            	echo "<p>" . $this->Html->link('Place Bid', array('controller' => 'items', 'action' => 'view', $items[$i][0]), array('class' => 'btn', 'role' => 'button')) . "</p>";
 			            	echo "</td>";
 		            	}
 		            ?>
