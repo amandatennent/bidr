@@ -19,7 +19,7 @@
 			$this->set('users', $this->Users->find('all'));
 		}
 		
-		public function view($id)
+		public function view($id = null)
 		{
 			// View user profile
 			if (!$id)

@@ -1,3 +1,4 @@
+<div id="container">
 <h1>What are you selling?</h1>
 <?php
 	echo $this->Form->create($item, ['type' => 'file']);
@@ -38,3 +39,4 @@
 	echo $this->Html->div('center', $this->Form->button('Sell Item', ['class' => 'btn']));
 	echo $this->Form->end();
 ?>
+</div>

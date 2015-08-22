@@ -1,5 +1,6 @@
-<div class="users form">
-	<?= $this->Flash->render('auth') ?>
+<?= $this->Flash->render('auth') ?>
+<div id="container">
+<div class="users form">	
 	<?= $this->Form->create() ?>
 		<fieldset>
 			<legend><?= __('Please enter your username and password') ?></legend>
@@ -8,4 +9,5 @@
 		</fieldset>
 		<?= $this->Form->button(__('Login')); ?>
 	<?= $this->Form->end() ?>
+</div>
 </div>

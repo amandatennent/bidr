@@ -1,3 +1,4 @@
+<div id="container">
 <div class="users form">
 	<?= $this->Form->create($user) ?>
 		<fieldset>
@@ -10,4 +11,5 @@
 		</fieldset>
 	<?= $this->Form->button(__('Submit')); ?>
 	<?= $this->Form->end() ?>
+</div>
 </div>

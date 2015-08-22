@@ -37,11 +37,9 @@ $description = 'bidr';
 <body>
     <div id="wrapper">
 	    <?= $this->element('header') ?>
-	    <div id="container">
 	            <?= $this->Flash->render() ?>
 				<!-- title: <?= $this->fetch('title') ?> -->
                 <?= $this->fetch('content') ?>
-	    </div>
 	    <div class="push"></div>
     </div>
     <?= $this->element('footer'); ?>
