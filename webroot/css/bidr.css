@@ -280,6 +280,13 @@ footer .right
 	margin-top: 100px;
 }
 
+.center-login
+{
+	text-align: center;
+	width: 100%;
+	margin: 30px;
+}
+
 /* Content */
 #container
 {

@@ -14,7 +14,7 @@
 						'rule' => [$this, 'checkNameLength'],
 						'message' => 'Name must not be over 100 characters in length.'])
 				->notEmpty('description', 'A description must be entered.')
-				->add('descrption', 'checkDescLength', [
+				->add('description', 'checkDescLength', [
 						'rule' => [$this, 'checkDescLength'],
 						'message' => 'Descriptions must not be over 20,000 characters in length.'])
 				->allowEmpty('image')
