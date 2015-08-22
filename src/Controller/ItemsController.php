@@ -7,10 +7,34 @@
 	use App\Controller\DateTime;
 	
 	class ItemsController extends AppController
-	{
+	{			
 		public function index()
 		{
-			// lists all items
+			// Save all items in an array
+			$conn = ConnectionManager::get('default');
+			$statement = $conn->execute('Call populateItemIndex()');
+	   		$data = $statement->fetchAll();
+	   		$statement->closeCursor();
+	   		
+	   		$items = array();
+						
+			// Add the time remaining string to each item and save all in an array
+			$counter = 0;
+			foreach ($data as $object)
+			{
+				$temp = array();
+				for ($i = 0; $i < 6; $i++)
+				{
+					$temp[$i] = $object[$i];
+				}
+				
+				$temp[6] = $this->convertToTime($object[3]);
+				$items[$counter] = $temp;
+				$counter++;
+			}
+			
+			$this->set(compact('items'));
+			$this->set('count_items', count($items));
 			
 		}
 		
@@ -98,8 +122,6 @@
 			foreach($durations as $duration)
 			{
 				$item = array();
-				//$item[0] = $duration->get('id');
-				//$item[1] = $duration->get('name');
 				$item[0] = $duration[0];
 				$item[1] = $duration[1];
 				$items[$counter] = $item;

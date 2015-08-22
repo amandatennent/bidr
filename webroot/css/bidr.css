@@ -22,6 +22,13 @@ h2
 	font-weight: normal;
 }
 
+h3
+{
+	font-weight: normal;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
 a
 {
 	color: black;
@@ -605,4 +612,42 @@ input[type='text']:disabled
 {
 	font-size: 18px;
 	width: 150px;
+}
+
+/* Item Index */
+.item-index
+{
+	width: 100%;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	font-size: 16px;
+}
+
+.item-index tr:nth-child(1) td:nth-child(1) /* Image */
+{
+	width: 25%;
+	text-align: center;
+}
+
+.item-index tr:nth-child(1) td:nth-child(1) img
+{
+	max-height: 200px;
+}
+
+.item-index tbody tr:nth-child(1) td:nth-child(2) /* Title */
+{
+	vertical-align: top;
+	padding-left: 10px;
+}
+
+.item-index tbody tr:nth-child(2) td:nth-child(1) /* Time remaining and price */
+{
+	vertical-align: bottom;
+	text-align: right;
+	padding-right: 5px;
+}
+
+.item-index tbody tr:nth-child(1) td:nth-child(2), .item-index tbody tr:nth-child(2) td:nth-child(1)
+{
+	height: 100px;
 }
