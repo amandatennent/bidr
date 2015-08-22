@@ -12,7 +12,7 @@ html, body
 
 h1
 {
-	margin-top: 10px;
+	margin-top: 0px;
 	margin-bottom: 5px;
 }
 
@@ -30,6 +30,11 @@ a
 input, select, textarea
 {
 	width: 100%;
+}
+
+input[type='checkbox']
+{
+	width: 20px;	
 }
 
 input[type='text'], textarea
@@ -210,6 +215,11 @@ header p a, header p
 	display: table-cell;
 }
 
+.edit-link
+{
+	text-align: right;
+}
+
 /* Footer */
 footer
 {
@@ -260,6 +270,7 @@ footer .right
 {
 	text-align: center;
 	width: 100%;
+	margin-top: 100px;
 }
 
 /* Content */

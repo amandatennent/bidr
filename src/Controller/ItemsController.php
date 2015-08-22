@@ -110,14 +110,87 @@
 			
 		}
 		
-		public function edit($id)
+		public function edit($item_id = null)
 		{
-			// edit item (make sure the user editing is the owner of the item)
-			if (!$id) // If the id hasn't been passed
+			if (!$item_id) // If the id hasn't been passed
 			{
-				// Do something...
+				$this->Flash->error(__('A item must be selected to edit.'));
+				return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);		
+			}
+			
+			$item = $this->Items->get($item_id);
+			
+			$this->set('item', $item);
+			
+			// Make sure the user editing the item is the owner of the item
+			$logged_in_user = $this->Auth->user('id');
+			if ($logged_in_user != $item->user_id)
+			{
+				$this->Flash->error(__('You are only able to edit your own items.'));
+				return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+			}
+			
+			$conn = ConnectionManager::get('default');
+			
+			// Get a list of available categories
+			$data = TableRegistry::get('Categories');
+			$categories = $data->find();
+			
+			$items = array();
+			$counter = 0;
+			
+			foreach($categories as $category)
+			{
+				$data = array();
+				$data[0] = $category->get('id');
+				$data[1] = $category->get('name');
+				$items[$counter] = $data;
+				$counter++;
+			}
+			
+			$this->set('categories', $items);
+			
+			
+			// Get a list of available durations			
+	   		$statement = $conn->execute('Call getDurations()');
+	   		$durations = $statement->fetchAll();
+	   		$statement->closeCursor();
+			
+			$items = array();
+			$counter = 0;
+			
+			foreach($durations as $duration)
+			{
+				$data = array();
+				$data[0] = $duration[0];
+				$data[1] = $duration[1];
+				$items[$counter] = $data;
+				$counter++;
+			}
+			
+			$this->set('durations', $items);	
+						
+			// When 'Save Changes' is clicked
+			if($this->request->is(['post', 'put']))
+			{
+				$this->Items->patchEntity($item, $this->request->data);
+				$item->user_id = $this->Auth->user('id');
 				
-			}			
+				// Images and start prices can't be edited.
+				
+				if($this->Items->save($item))
+				{
+					// Insert the end date
+					$statement = $conn->execute("Call updateEndTime($item->id)");
+					$statement->closeCursor();
+					
+					$this->Flash->success(__("Your item has been updated."));
+					return $this->redirect(['controller' => 'Items', 'action' => 'view', $item_id]);
+				}
+				
+				$this->Flash->error(__('Unable to list your item'));
+			}
+					
 		}
 		
 		public function view($id = null)
@@ -180,8 +253,6 @@
 				{
 					$this->Flash->error(__('You have entered an invalid bid amount.'));
 				}
-				
-
 			}
 		}
 		

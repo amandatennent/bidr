@@ -13,6 +13,12 @@
 	}
 ?>
 <div id="container">
+<?php
+	if ($item->user_id == $current_user)
+	{
+		echo $this->Html->div('edit-link', $this->Html->link('Edit Item', ['controller' => 'Items', 'action' => 'edit', $item->id]));
+	}
+?>
 <h1><?= $item->name ?></h1>
 <h2><?= $category_name ?></h2>
 <table id="item-view">
