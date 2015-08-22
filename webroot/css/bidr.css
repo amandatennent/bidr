@@ -14,6 +14,16 @@ a
 	color: black;
 }
 
+input, select, textarea
+{
+	width: 100%;
+}
+
+input[type='text'], textarea
+{
+	border: 1px solid #e6e6e6;
+}
+
 #wrapper
 {
 	min-height: 100%;
@@ -193,6 +203,12 @@ footer .right
    	vertical-align: middle;
 }
 
+.center
+{
+	text-align: center;
+	width: 100%;
+}
+
 /* Content */
 #container
 {
@@ -203,6 +219,10 @@ footer .right
 	display: table;
 }
 
+.error-message
+{
+	color: red;
+}
 
 /* Content -> Home Page */
 #home-menu
@@ -291,7 +311,9 @@ footer .right
     user-select: none;
     background-image: none;
     border: 1px solid transparent;
-    border-radius: 4px
+    border-radius: 4px;
+    background-color: #008CFF;
+	color: white;
 }
 
 .small-items
@@ -407,4 +429,10 @@ footer .right
 .no-items
 {
 	text-align: center;
+}
+
+/* Selling Page */
+.group
+{
+	margin-bottom: 10px;
 }

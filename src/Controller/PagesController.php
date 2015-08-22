@@ -61,6 +61,7 @@ class PagesController extends AppController
    		$conn = ConnectionManager::get('default');
    		$statement = $conn->execute('Call populateHomePage()');
    		$items = $statement->fetchAll();
+   		$statement->closeCursor();
    		$this->set('items', $items);      
         
         $path = func_get_args();
