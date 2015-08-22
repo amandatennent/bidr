@@ -68,15 +68,18 @@ class AppController extends Controller
         // Check if user is logged in. Save the username.
         $loggedIn = false;
         $username = NULL;
+        $user_id = NULL;
         
         if ($this->Auth->user())
         {
         	$loggedIn = true;
         	$username = $this->Auth->user('username');
+        	$user_id = $this->Auth->user('id');
         }
         
         $this->set('loggedIn', $loggedIn);
-        $this->set('username', $username);
+        $this->set('logged_in_username', $username);
+        $this->set('logged_in_userid', $user_id);
     }
     
     public function beforeFilter(Event $event)

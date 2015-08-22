@@ -26,19 +26,18 @@
     </div>
     <div id="header-links">
     	<!-- If the user is logged in, show them their username -->
-    	<?php
-    		if ($loggedIn == true)
-    		{
-    			echo "<p>Hi, <a href=''>$username!</a>&nbsp;&nbsp;";
-    			echo "<a href='/users/logout/'>Logout?</a></p>";
-    			
-    		}
+    	<?php if ($loggedIn == true) : ?>
+    		<p>
+    			Hi, <?= $this->Html->link($logged_in_username . '!', ['controller' => 'Users', 'action' => 'view', $logged_in_userid]) ?>
+	    		&nbsp;
+    			<?= $this->Html->link('Logout?', ['controller' => 'Users', 'action' => 'logout']) ?>
+   			</p>
+		<?php else : ?>
     		else
-    		{
-    			echo "<p><a href='/users/login/'>Sign In</a> ";
-    			echo " | <a href='/users/add/'>Register</a></p>";
-    		}
-    	?>
+    			<p>
+    				<?= $this->Html->link('Sign In', ['controller' => 'Users', 'action' => 'login']) ?> | <?= $this->Html->link('Register', ['controller' => 'Users', 'action' => 'add']) ?>
+   				</p>
+    	<?php endif; ?>
         
         <p><a href="">Advanced Search</a></p>
     </div>
