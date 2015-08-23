@@ -67,7 +67,7 @@
 					$file_name = $this->request->data['image']['name'];
 					$filepart = explode(".", $file_name);
 					$ext = end($filepart);
-					$new_file_name = "image" . $number . "." . $ext;
+					$new_file_name = "picture" . $number . "." . $ext;
 					$origin = $this->request->data['image']['tmp_name'];
 					$uploadfile = $upload_dir . $new_file_name;
 					move_uploaded_file($this->request->data['image']['tmp_name'], $uploadfile);

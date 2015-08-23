@@ -9,11 +9,11 @@
     	]); ?>
         <div id="table-helper">
             <div id="header-search-box">
-                <?= $this->Form->input('', ['type' => 'text']); ?>
+                <?= $this->Form->input('search_string', ['type' => 'text', 'label' => false]); ?>
             </div>
             <div id="header-search-cat-menu">
                     <?= $this->Form->select(
-                    	'field',
+                    	'search_cat',
                     	$category_names,
                     	['empty' => '(choose a category)']
                     ); ?>
