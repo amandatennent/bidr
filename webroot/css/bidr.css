@@ -44,7 +44,7 @@ input[type='checkbox']
 	width: 20px;	
 }
 
-input[type='text'], textarea
+input[type='text'], textarea, input[type='password'], input[type='email']
 {
 	border: 1px solid #e6e6e6;
 }

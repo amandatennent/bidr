@@ -4,6 +4,7 @@
 	use App\Controller\AppController;
 	use Cake\Event\Event;
 	use Cake\Network\Exception\NotFoundException;
+	use Cake\Datasource\ConnectionManager;
 	
 	class UsersController extends AppController
 	{
@@ -20,16 +21,206 @@
 		}
 		
 		public function view($id = null)
-		{
+		{			
 			// View user profile
-			if (!$id)
+			if (!$id) // If the id hasn't been passed
 			{
-				throw new NotFoundException(__('Invalid user'));
+				// Redirect back to home page 
+				return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+			}
+			
+			$user = $this->Users->get($id);
+			$this->set(compact('user'));
+			$this->set('loggedInUser', $this->Auth->user('id'));
+			
+			$conn = ConnectionManager::get('default');
+			
+			// Get active selling items
+			$statement = $conn->execute("Call getUserActiveSelling($id)");
+			$data = $statement->fetchAll();
+			$statement->closeCursor();
+			$this->set('noActiveSelling', count($data));
+			
+			// Get sold items
+			$statement = $conn->execute("Call getUserSold($id)");
+			$data = $statement->fetchAll();
+			$statement->closeCursor();
+			$this->set('noSold', count($data));
+			
+			// Get active items being bid on
+			$statement = $conn->execute("Call getBidOnItems($id)");
+			$data = $statement->fetchAll();
+			$statement->closeCursor();
+			$this->set('noActiveBids', count($data));
+			
+			// Get completed items that were bid on
+			$statement = $conn->execute("Call getCompleteBidOnItems($id)");
+			$data = $statement->fetchAll();
+			$statement->closeCursor();
+			$this->set('noCompleteBids', count($data));
+		}
+		
+		public function bidding($id = null)
+		{
+			// Shows the user's active items that they have bid on
+			// The user must be the account owner
+			
+			if (!$id || $this->Auth->user('id') != $id) // If the id hasn't been passed
+			{
+				// Redirect back to user's account page
+				return $this->redirect(['controller' => 'Users', 'action' => 'view', $id]);
 			}
 			
 			$user = $this->Users->get($id);
 			$this->set(compact('user'));
 			
+			// Get active items being bid on
+			$conn = ConnectionManager::get('default');
+			$statement = $conn->execute("Call getBidOnItems($id)");
+			$data = $statement->fetchAll();
+			$statement->closeCursor();
+			
+	   		$items = array();
+						
+			// Add the time remaining string to each item and save all in an array
+			$counter = 0;
+			foreach ($data as $object)
+			{
+				$temp = array();
+				for ($i = 0; $i < 6; $i++)
+				{
+					$temp[$i] = $object[$i];
+				}
+				
+				$temp[6] = $this->convertToTime($object[3]);
+				$items[$counter] = $temp;
+				$counter++;
+			}
+			
+			$this->set(compact('items'));
+			$this->set('count_items', count($items));
+		}
+		
+		public function ended_bid($id = null)
+		{
+			// Shows the user's active items that they have bid on
+			// The user must be the account owner
+			
+			if (!$id || $this->Auth->user('id') != $id) // If the id hasn't been passed
+			{
+				// Redirect back to user's account page
+				return $this->redirect(['controller' => 'Users', 'action' => 'view', $id]);
+			}
+			
+			$user = $this->Users->get($id);
+			$this->set(compact('user'));
+			
+			// Get active items being bid on
+			$conn = ConnectionManager::get('default');
+			$statement = $conn->execute("Call getCompleteBidOnItems($id)");
+			$data = $statement->fetchAll();
+			$statement->closeCursor();
+			
+	   		$items = array();
+						
+			// Add the time remaining string to each item and save all in an array
+			$counter = 0;
+			foreach ($data as $object)
+			{
+				$temp = array();
+				for ($i = 0; $i < 6; $i++)
+				{
+					$temp[$i] = $object[$i];
+				}
+				
+				$temp[6] = $this->convertToTime($object[3]);
+				$items[$counter] = $temp;
+				$counter++;
+			}
+			
+			$this->set(compact('items'));
+			$this->set('count_items', count($items));
+		}
+		
+		public function selling($id = null)
+		{
+			// Shows the user's active items that they have bid on			
+			if (!$id) // If the id hasn't been passed
+			{
+				// Redirect back to user's account page
+				return $this->redirect(['controller' => 'Users', 'action' => 'view', $id]);
+			}
+			
+			$user = $this->Users->get($id);
+			$this->set(compact('user'));
+			$this->set('loggedInUser', $this->Auth->user('id'));
+			
+			// Get active items being bid on
+			$conn = ConnectionManager::get('default');
+			$statement = $conn->execute("Call getUserActiveSelling($id)");
+			$data = $statement->fetchAll();
+			$statement->closeCursor();
+			
+	   		$items = array();
+						
+			// Add the time remaining string to each item and save all in an array
+			$counter = 0;
+			foreach ($data as $object)
+			{
+				$temp = array();
+				for ($i = 0; $i < 6; $i++)
+				{
+					$temp[$i] = $object[$i];
+				}
+				
+				$temp[6] = $this->convertToTime($object[3]);
+				$items[$counter] = $temp;
+				$counter++;
+			}
+			
+			$this->set(compact('items'));
+			$this->set('count_items', count($items));
+		}
+		
+		public function sold($id = null)
+		{
+			// Shows the user's active items that they have bid on			
+			if (!$id) // If the id hasn't been passed
+			{
+				// Redirect back to user's account page
+				return $this->redirect(['controller' => 'Users', 'action' => 'view', $id]);
+			}
+			
+			$user = $this->Users->get($id);
+			$this->set(compact('user'));
+			
+			$this->set('loggedInUser', $this->Auth->user('id'));
+			
+			// Get active items being bid on
+			$conn = ConnectionManager::get('default');
+			$statement = $conn->execute("Call getUserSold($id)");
+			$data = $statement->fetchAll();
+			$statement->closeCursor();
+			
+	   		$items = array();
+						
+			// Add the time remaining string to each item and save all in an array
+			$counter = 0;
+			foreach ($data as $object)
+			{
+				$temp = array();
+				for ($i = 0; $i < 6; $i++)
+				{
+					$temp[$i] = $object[$i];
+				}
+				
+				$temp[6] = $this->convertToTime($object[3]);
+				$items[$counter] = $temp;
+				$counter++;
+			}
+			
+			$this->set(compact('items'));
+			$this->set('count_items', count($items));
 		}
 		
 		public function add()
@@ -70,6 +261,27 @@
 		public function logout()
 		{
 			return $this->redirect($this->Auth->logout());
+		}
+		
+		private function convertToTime($seconds)
+		{
+			// This function converts the seconds pass to a date string				
+			// Calculate number of days
+			$days = intval($seconds / 86400);
+			$seconds = $seconds % 86400;
+			
+			// Calculate number of hours
+			$hours = intval($seconds / 3600);
+			$seconds = $seconds % 3600;
+			
+			// Calculate number of minutes
+			$minutes = intval($seconds / 60);
+			
+			// Calculate number of seconds
+			$seconds = $seconds % 60;
+			
+			$string = "$days days, $hours hours, $minutes minutes and $seconds seconds";
+			return $string;
 		}
 	}
 ?>
