@@ -5,9 +5,17 @@
 	use Cake\ORM\TableRegistry;
 	use Cake\Datasource\ConnectionManager;
 	use App\Controller\DateTime;
+	use Cake\Event\Event;
 	
 	class ItemsController extends AppController
-	{			
+	{
+		public function beforeFilter(Event $event)
+		{
+			parent::beforeFilter($event);
+			$this->Auth->allow(['view', 'index']);
+			$this->Auth->deny(['add', 'edit']);
+		}
+		
 		public function index()
 		{
 			// Save all items in an array

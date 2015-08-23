@@ -3,9 +3,15 @@
 	
 	use App\Controller\AppController;
 	use Cake\Datasource\ConnectionManager;
+	use Cake\Event\Event;
 	
 	class CategoriesController extends AppController
 	{
+		public function beforeFilter(Event $event)
+		{
+			parent::beforeFilter($event);
+			$this->Auth->allow();
+		}
 		
 		public function index()
 		{

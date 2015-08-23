@@ -11,13 +11,14 @@
 		public function beforeFilter(Event $event)
 		{
 			parent::beforeFilter($event);
-			$this->Auth->allow(['add', 'logout']);
+			$this->Auth->allow(['add', 'logout', 'index', 'selling', 'sold','view']);
+			$this->Auth->deny(['bidding', 'edit', 'ended_bid']);
 		}
 		
 		public function index()
 		{
 			// This page to redirect to site home page
-			$this->set('users', $this->Users->find('all'));
+			return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
 		}
 		
 		public function view($id = null)

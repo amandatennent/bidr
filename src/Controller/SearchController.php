@@ -3,13 +3,19 @@
 	
 	use App\Controller\AppController;
 	use Cake\Datasource\ConnectionManager;
+	use Cake\Event\Event;
 	
 	class SearchController extends AppController
 	{
+		public function beforeFilter(Event $event)
+		{
+			parent::beforeFilter($event);
+			$this->Auth->allow();
+		}
 		public function index()
 		{
-			// Shows advanced search page
-			
+			// Redirect to home page
+			return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
 		}
 		
 		public function results()
