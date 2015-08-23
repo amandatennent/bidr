@@ -263,6 +263,45 @@
 			return $this->redirect($this->Auth->logout());
 		}
 		
+		public function edit($id = null)
+		{
+			// Shows the user's active items that they have bid on
+			// The user must be the account owner
+			
+			if (!$id || $this->Auth->user('id') != $id) // If the id hasn't been passed
+			{
+				// Redirect back to user's account page
+				return $this->redirect(['controller' => 'Users', 'action' => 'view', $id]);
+			}
+			
+			$user = $this->Users->get($id);
+			$this->set('user', $user);
+			
+			if ($this->request->is(['post', 'put']))
+			{
+				$user->username = $this->request->data('username');
+				$user->email = $this->request->data('email');
+				$user->first_name = $this->request->data('first_name');
+				$user->last_name = $this->request->data('last_name');
+				
+				// Check if the user updated their password
+				if(strlen($this->request->data('new_password')) > 0)
+				{
+					$user->password = $this->request->data('new_password');
+				}
+				
+				if ($this->Users->save($user))
+				{
+					$this->Flash->success(__('The user has been saved.'));
+					return $this->redirect(['controller' => 'Users', 'action' => 'view', $id]);
+				}
+				else
+				{				
+					$this->Flash->error(__('Unable to add the user'));
+				}
+			}
+		}
+		
 		private function convertToTime($seconds)
 		{
 			// This function converts the seconds pass to a date string				

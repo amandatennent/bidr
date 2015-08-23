@@ -81,7 +81,7 @@
 					$statement->closeCursor();
 					
 					$this->Flash->success(__("Your item has been listed."));
-					return $this->redirect(['controller' => 'Pages', 'action' => 'display', 'home']);
+					return $this->redirect(['controller' => 'Items', 'action' => 'view', $item->id]);
 				}
 				
 				$this->Flash->error(__('Unable to list your item'));

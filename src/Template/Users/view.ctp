@@ -1,4 +1,9 @@
 <div id="container">
+
+<?php if($user->id == $loggedInUser) : ?>
+<?= $this->Html->div('edit-link', $this->Html->link('Edit User Account', ['controller' => 'Users', 'action' => 'edit', $user->id])) ?>
+<?php endif ?>
+
 <h1><?= $user->username ?></h1>
 <h2>Member since <?= date_parse($user->join_date)["year"] ?></h2>
 
