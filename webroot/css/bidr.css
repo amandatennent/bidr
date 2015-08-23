@@ -658,3 +658,16 @@ input[type='text']:disabled
 {
 	height: 100px;
 }
+
+/* Categories */
+ul
+{
+	-webkit-column-count: 4;
+	-moz-column-count: 4;
+	column-count: 4;
+	margin-top: 10px;
+}
+li
+{
+	list-style-type: none;
+}
