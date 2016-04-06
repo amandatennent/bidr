@@ -1,0 +1,6 @@
+bidr is an online auction website, developed for a University Assignment, developed using CakePHP
+
+Files:
+- bidr.sql --> creates & sets up the database and adds data
+- bidr stored procedures.sql --> adds the stored procedures used within the web app
+- destroy_bidr.sql --> deletes the database
