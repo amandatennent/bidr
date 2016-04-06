@@ -1,5 +1,7 @@
-/vendor/*
-/config/app.php
-/tmp/*
-/logs/*
-/webroot/img/auction_images/
+Source Files/vendor/*
+Source Files/tmp/*
+Source Files/webroot/img/auction_images/
+**/.DS_Store
+Source Files/webroot/img/
+Source Files/config/
+Source Files/logs/*
